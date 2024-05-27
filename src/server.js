@@ -5,6 +5,8 @@ import handleListUsers from "./handleListUsers.js";
 import handleReadUserById from "./handleReadUserById.js";
 import handleSearchUsers from "./handleSearchUsers.js";
 import handleCreateUser from "./handleCreateUser.js";
+import handleUpdateUser from "./handleUpdateUser.js";
+import handleDeleteUser from "./handleDeleteUser.js";
 
 let server = http.createServer((req, res) => {
   let { method, url } = req;
@@ -18,11 +20,21 @@ let server = http.createServer((req, res) => {
       handleListUsers(req, res);
     }
   } else if (
-    method === "GET" &&
     pathname.startsWith("/users/") &&
     pathname.slice(1).split("/").length === 2
   ) {
-    handleReadUserById(req, res);
+    let segments = pathname.slice(1).split("/");
+    //   console.log("segments : ", segments);
+    let userId = segments[1];
+
+    if (method === "GET") {
+      handleReadUserById(req, res, userId);
+    } else if (method === "PUT") {
+      handleUpdateUser(req, res, userId);
+    } else if (method === "DELETE") {
+      console.log("reached the delet method");
+      handleDeleteUser(req, res, userId);
+    }
   } else if (method === "POST" && pathname === "/users") {
     console.log("checking wether it is the reaching the create user endpoint");
     handleCreateUser(req, res);
