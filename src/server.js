@@ -24,6 +24,7 @@ let server = http.createServer((req, res) => {
   ) {
     handleReadUserById(req, res);
   } else if (method === "POST" && pathname === "/users") {
+    console.log("checking wether it is the reaching the create user endpoint");
     handleCreateUser(req, res);
   }
 });
